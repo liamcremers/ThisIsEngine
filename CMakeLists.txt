@@ -31,11 +31,19 @@ include(FetchContent)
 # Add glm
 FetchContent_Declare(
     glm
-    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
-    DOWNLOAD_NO_PROGRESS ON
-    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG 1.0.1
+    GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(glm)
+
+#FetchContent_Declare(
+#    glm
+#    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
+#    DOWNLOAD_NO_PROGRESS ON
+#    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+#)
+#FetchContent_MakeAvailable(glm)
 
 # Add ImGui
 FetchContent_Declare(
@@ -53,6 +61,7 @@ if(WIN32)
         URL https://www.libsdl.org/release/SDL2-devel-2.30.10-VC.zip
         DOWNLOAD_NO_PROGRESS ON
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+	    DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
     )
     FetchContent_MakeAvailable(SDL2)
     set(SDL2_INCLUDE_DIR ${sdl2_SOURCE_DIR}/include)
@@ -64,12 +73,13 @@ if(WIN32)
         set(SDL2_LIBRARY_DLL "${sdl2_SOURCE_DIR}/lib/x86/SDL2.dll")
     endif()
 
-    # Add SDL2_image
-    FetchContent_Declare(
-        SDL2_image
-        URL https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.8.3-VC.zip
-        DOWNLOAD_NO_PROGRESS ON
-        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+    # Add SDL2_image  
+    FetchContent_Declare(  
+        SDL2_image  
+        URL https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.8.3-VC.zip  
+        DOWNLOAD_NO_PROGRESS ON  
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads  
+        DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
     )
     FetchContent_MakeAvailable(SDL2_image)
     set(SDL2_IMAGE_INCLUDE_DIR ${sdl2_image_SOURCE_DIR}/include)
@@ -87,6 +97,7 @@ if(WIN32)
         URL https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.22.0-VC.zip
         DOWNLOAD_NO_PROGRESS ON
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+		DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
     )
     FetchContent_MakeAvailable(SDL2_ttf)
     set(SDL2_TTF_INCLUDE_DIR ${sdl2_ttf_SOURCE_DIR}/include)
@@ -104,6 +115,7 @@ FetchContent_Declare(
     URL https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.8.0-VC.zip
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+	DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
 )
 FetchContent_MakeAvailable(SDL2_mixer)
 set(SDL2_MIXER_INCLUDE_DIR ${sdl2_mixer_SOURCE_DIR}/include)
@@ -199,12 +211,12 @@ elseif(NOT EMSCRIPTEN)
         ${sdl2_ttf_SOURCE_DIR}
     )
     target_link_libraries(${TARGET_NAME} PUBLIC
-        SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf
+        SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf glm::glm
     )
 endif()
 
 target_include_directories(${TARGET_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/Minigin/
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC
@@ -228,8 +240,8 @@ target_link_libraries(${TARGET_NAME} PUBLIC OpenGL::GL)
 target_link_libraries(${TARGET_NAME} PUBLIC XInput)
 
 if(EMSCRIPTEN)
-    set(EMSCRIPTEN_COMPILE_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -g")
-    set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -g -sALLOW_MEMORY_GROWTH --preload-file \"${CMAKE_SOURCE_DIR}/Data@/\" -sSDL2_IMAGE_FORMATS=['tga','png']")
+    set(EMSCRIPTEN_COMPILE_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -pthread -g")
+    set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -pthread -sALLOW_MEMORY_GROWTH --preload-file \"${CMAKE_SOURCE_DIR}/Data@/\" -sSDL2_IMAGE_FORMATS=['tga','png'] -g")
 
     # Work around https://github.com/emscripten-core/emscripten/issues/11513
     set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -fno-stack-protector")
@@ -243,7 +255,8 @@ if(EMSCRIPTEN)
         LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS}"
     )
 
-    # Have emscripten generate a html page too.
+    # Ensure SDL2 is properly linked for Emscripten builds
+    target_link_libraries(${TARGET_NAME} PUBLIC SDL2 SDL2_image SDL2_ttf SDL2_mixer glm)
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 elseif(WIN32)

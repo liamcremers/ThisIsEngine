@@ -4,7 +4,8 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "ResourceManager.h"
-#include <glm.hpp>
+
+#include <glm/glm.hpp>
 #include <vector>
 #include <SDL.h>
 #include <string>

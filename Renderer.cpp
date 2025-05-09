@@ -6,9 +6,11 @@
 #include "DebugRenderer.h"
 #include "CollisionSystem.h"
 
+#ifdef WIN32
 #include <imgui.h>
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl3.h>
+#endif // WIN32
 
 static auto GetOpenGLDriverIndex() -> int
 {
@@ -35,10 +37,12 @@ void dae::Renderer::Init(SDL_Window* window)
                                  SDL_GetError());
     }
 
+#ifdef WIN32
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
     ImGui_ImplOpenGL3_Init("#version 130");
+#endif // WIN32
 }
 
 auto dae::Renderer::Render() const -> void
@@ -49,6 +53,7 @@ auto dae::Renderer::Render() const -> void
 
     SceneManager::GetInstance().Render();
 
+#ifdef WIN32
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
@@ -59,6 +64,7 @@ auto dae::Renderer::Render() const -> void
 #endif // DEBUG_RENDER
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif // WIN32
 
 #ifdef DEBUG_RENDER
     DebugRenderer::GetInstance().Flush();
@@ -68,9 +74,11 @@ auto dae::Renderer::Render() const -> void
 
 auto dae::Renderer::Destroy() -> void
 {
+#ifdef WIN32
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+#endif // WIN32
 
     if (m_renderer != nullptr)
     {

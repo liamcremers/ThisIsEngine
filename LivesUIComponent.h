@@ -25,7 +25,7 @@ namespace dae
         void UpdateUI();
         void UIGameOver();
 
-        Font& m_pFont;
+        //Font& m_pFont;
         LivesComponent* m_pLivesComponent{};
         TextComponent* m_pTextComponent{};
     };

@@ -10,7 +10,7 @@ dae::ScoreUIComponent::ScoreUIComponent(GameObject& parent,
                                         Font& font,
                                         ScoreComponent* pScoreComp) :
     BaseComponent{ parent },
-    m_pFont{ font },
+    //m_pFont{ font },
     m_pScoreComponent{ pScoreComp },
     m_pTextComponent{ parent.AddComponent<TextComponent>(
         "Score: " + std::to_string(m_pScoreComponent->GetScore()),

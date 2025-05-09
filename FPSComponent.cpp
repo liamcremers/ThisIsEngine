@@ -6,7 +6,7 @@
 
 dae::FPSComponent::FPSComponent(GameObject& parent, Font& font) :
     BaseComponent(parent),
-    m_pFont{ font },
+    //m_pFont{ font },
     m_pTextComponent{ parent.AddComponent<TextComponent>("FPS: ", font) }
 {}
 

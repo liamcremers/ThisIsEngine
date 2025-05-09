@@ -12,11 +12,11 @@ dae::TextComponent::TextComponent(GameObject& parent,
                                   std::string text,
                                   Font& font) :
     BaseComponent(parent),
-    m_needsUpdate(true),
     m_text(std::move(text)),
     m_font(font),
     m_textTexture(nullptr),
-    m_pTransform(parent.GetComponent<TransformComponent>())
+    m_pTransform(parent.GetComponent<TransformComponent>()),
+    m_needsUpdate(true)
 {}
 
 void dae::TextComponent::Update()

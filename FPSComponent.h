@@ -13,7 +13,7 @@ namespace dae
         void Update() override;
 
     private:
-        Font& m_pFont;
+        //Font& m_pFont;
         TextComponent* m_pTextComponent{};
     };
 }

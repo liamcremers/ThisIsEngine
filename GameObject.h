@@ -5,7 +5,8 @@
 #include "ComponentsHeader.h"
 
 #include <string>
-#include <glm.hpp>
+
+#include <glm/glm.hpp>
 #include <memory>
 #include <vector>
 #include <optional>
@@ -111,13 +112,14 @@ namespace dae
         void RemoveChild(GameObject* pChild);
         void AddChild(GameObject* pChild);
 
+        std::string m_Name{};
+
         GameObject* m_pParent{};
         std::vector<GameObject*> m_pChildren{};
         std::vector<std::unique_ptr<BaseComponent>> m_pComponents{};
 
         TransformComponent* m_pTransform{ nullptr };
 
-        std::string m_Name{};
         bool m_MarkedForDelete{};
         bool m_PositionDirty{};
     };

@@ -1,4 +1,5 @@
 #pragma once
+#ifdef WIN32
 
 namespace dae
 {
@@ -29,3 +30,4 @@ namespace dae
         ControllerImpl* m_pImpl;
     };
 }
+#endif //WIN32

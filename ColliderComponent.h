@@ -1,10 +1,10 @@
 #pragma once
-#include "glm.hpp"
 #include "BaseComponent.h"
 
 #include <vector>
 #include <functional>
 #include <unordered_set>
+#include <glm/glm.hpp>
 
 enum class CollisionType
 {

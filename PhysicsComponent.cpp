@@ -6,8 +6,8 @@
 
 dae::PhysicsComponent::PhysicsComponent(GameObject& parent, bool useGravity) :
     BaseComponent{ parent },
-    m_UseGravity{ useGravity },
-    m_pCollider{ parent.GetComponent<ColliderComponent>() }
+    m_pCollider{ parent.GetComponent<ColliderComponent>() },
+    m_UseGravity{ useGravity }
 {
     assert(m_pCollider != nullptr &&
            "PhysicsComponent requires a ColliderComponent to function");

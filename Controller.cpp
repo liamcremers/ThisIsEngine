@@ -1,8 +1,11 @@
+#ifdef WIN32
 #include "Controller.h"
 #include "Command.h"
 
+#ifdef WIN32
 #include <Xinput.h>
 #include <minwinbase.h>
+#endif // WIN32
 #include <unordered_map>
 #include <vector>
 #include <string>
@@ -160,3 +163,5 @@ namespace dae
         m_pImpl->RemoveCommand(pCommand, button, btnState);
     }
 }
+
+#endif // WIN32

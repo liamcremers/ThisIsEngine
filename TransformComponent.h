@@ -4,7 +4,8 @@
 #include "Renderer.h"
 
 #include <iostream>
-#include <glm.hpp>
+
+#include <glm/glm.hpp>
 
 namespace dae
 {

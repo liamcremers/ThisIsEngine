@@ -112,10 +112,36 @@ void dae::Minigin::Run(const std::function<void()>& load)
 #endif
 }
 
+void dae::Minigin::RunOneFrame()
+{
+    using namespace std::chrono;
+    auto& engineTime = EngineTime::GetInstance();
+    auto& sceneManager = SceneManager::GetInstance();
+
+    engineTime.Update();
+    m_lag += engineTime.GetDeltaTime();
+
+    m_continue = InputManager::GetInstance().ProcessInput();
+
+    sceneManager.Update();
+    while (m_lag >= engineTime.GetFixedTimeStep())
+    {
+        sceneManager.FixedUpdate();
+        CollisionSystem::GetInstance().ProcessCollisions();
+        m_lag -= engineTime.GetFixedTimeStep();
+    }
+    sceneManager.LateUpdate();
+    Renderer::GetInstance().Render();
+
+    const auto sleepTime = std::chrono::duration<float>(
+        engineTime.GetLastTime() + milliseconds(m_msPerFrame) -
+        high_resolution_clock::now());
+    std::this_thread::sleep_for(sleepTime);
+}
+
 void dae::Minigin::GameLoop()
 {
     using namespace std::chrono;
-    using clock = high_resolution_clock;
     while (m_continue)
     {
         auto& engineTime = EngineTime::GetInstance();

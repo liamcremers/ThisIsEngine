@@ -24,7 +24,7 @@ namespace dae
     private:
         void UpdateUI();
 
-        Font& m_pFont;
+        //Font& m_pFont;
         ScoreComponent* m_pScoreComponent{};
         TextComponent* m_pTextComponent{};
     };

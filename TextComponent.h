@@ -28,10 +28,10 @@ namespace dae
         TextComponent& operator=(TextComponent&& other) = delete;
 
     private:
+        std::string m_text;
         Font& m_font;
         std::unique_ptr<Texture2D> m_textTexture;
         TransformComponent* m_pTransform{ nullptr };
-        std::string m_text;
         bool m_needsUpdate;
     };
 }

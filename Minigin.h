@@ -13,6 +13,7 @@ namespace dae
         explicit Minigin(const std::filesystem::path& dataPath);
         ~Minigin();
         void Run(const std::function<void()>& load);
+        void RunOneFrame();
         void GameLoop();
 
         [[nodiscard]] static consteval auto GetWindowWidth() -> int
