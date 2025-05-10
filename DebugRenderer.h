@@ -5,7 +5,7 @@
 #include "Font.h"
 #include "ResourceManager.h"
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 #include <vector>
 #include <SDL.h>
 #include <string>

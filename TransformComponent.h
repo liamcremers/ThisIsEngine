@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 namespace dae
 {

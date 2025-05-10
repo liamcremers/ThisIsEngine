@@ -6,7 +6,7 @@
 
 #include <string>
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 #include <memory>
 #include <vector>
 #include <optional>

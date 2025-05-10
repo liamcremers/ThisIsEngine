@@ -27,23 +27,14 @@ source_group("Other" FILES ${OTHER_SOURCES})
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 
 include(FetchContent)
-
 # Add glm
 FetchContent_Declare(
     glm
-    GIT_REPOSITORY https://github.com/g-truc/glm.git
-    GIT_TAG 1.0.1
-    GIT_SHALLOW TRUE
+    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
+    DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
 )
 FetchContent_MakeAvailable(glm)
-
-#FetchContent_Declare(
-#    glm
-#    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
-#    DOWNLOAD_NO_PROGRESS ON
-#    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
-#)
-#FetchContent_MakeAvailable(glm)
 
 # Add ImGui
 FetchContent_Declare(
@@ -53,7 +44,6 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(ImGui)
-
 # Add SDL2
 if(WIN32)
     FetchContent_Declare(
@@ -107,52 +97,27 @@ if(WIN32)
     else()
         set(SDL2_TTF_LIBRARIES ${sdl2_ttf_SOURCE_DIR}/lib/x86/SDL2_ttf.lib)
         set(SDL2_TTF_LIBRARY_DLL "${sdl2_ttf_SOURCE_DIR}/lib/x86/SDL2_ttf.dll")
-    endif()
+	endif()
 
-    # Add SDL2_mixer
-FetchContent_Declare(
-    SDL2_mixer
-    URL https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.8.0-VC.zip
-    DOWNLOAD_NO_PROGRESS ON
-    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
-	DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
-)
-FetchContent_MakeAvailable(SDL2_mixer)
-set(SDL2_MIXER_INCLUDE_DIR ${sdl2_mixer_SOURCE_DIR}/include)
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(SDL2_MIXER_LIBRARIES "${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.lib")
-    set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.dll")
-else()
-    set(SDL2_MIXER_LIBRARIES "${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.lib")
-    set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.dll")
-endif()
-
+	# Add SDL2_mixer
+	FetchContent_Declare(
+		SDL2_mixer
+		URL https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.8.0-VC.zip
+		DOWNLOAD_NO_PROGRESS ON
+		DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+		DOWNLOAD_EXTRACT_TIMESTAMP FALSE  
+	)
+	FetchContent_MakeAvailable(SDL2_mixer)
+	set(SDL2_MIXER_INCLUDE_DIR ${sdl2_mixer_SOURCE_DIR}/include)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		set(SDL2_MIXER_LIBRARIES "${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.lib")
+		set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.dll")
+	else()
+		set(SDL2_MIXER_LIBRARIES "${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.lib")
+		set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.dll")
+	endif()
 
     find_package(VLD CONFIG)
-
-    set(IMGUI_SRC
-        ${imgui_SOURCE_DIR}/imconfig.h
-        ${imgui_SOURCE_DIR}/imgui_demo.cpp
-        ${imgui_SOURCE_DIR}/imgui_draw.cpp
-        ${imgui_SOURCE_DIR}/imgui_internal.h
-        ${imgui_SOURCE_DIR}/imstb_rectpack.h
-        ${imgui_SOURCE_DIR}/imstb_textedit.h
-        ${imgui_SOURCE_DIR}/imstb_truetype.h
-        ${imgui_SOURCE_DIR}/imgui_tables.cpp
-        ${imgui_SOURCE_DIR}/imgui.cpp
-        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-        ${imgui_SOURCE_DIR}/imgui.h
-
-        # Backends
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.h
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer2.cpp
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-    )
-
-    add_library(ImGui STATIC ${IMGUI_SRC})
-    target_include_directories(ImGui PUBLIC ${imgui_SOURCE_DIR} ${SDL2_INCLUDE_DIR})
-    target_link_libraries(ImGui PRIVATE ${SDL2_LIBRARIES})
 
     # Set all include directories
     target_include_directories(${TARGET_NAME} PRIVATE
@@ -161,7 +126,6 @@ endif()
         ${SDL2_IMAGE_INCLUDE_DIR}
         ${SDL2_TTF_INCLUDE_DIR}
         ${SDL2_MIXER_INCLUDE_DIR}
-        ImGui
     )
 
     # Set libraries to link with
@@ -171,9 +135,7 @@ endif()
         ${SDL2_TTF_LIBRARIES}
         ${SDL2_MIXER_LIBRARIES}
         ${VLD_LIBRARY}
-        ImGui
     )
-
 elseif(NOT EMSCRIPTEN)
 
     FetchContent_Declare(
@@ -211,7 +173,7 @@ elseif(NOT EMSCRIPTEN)
         ${sdl2_ttf_SOURCE_DIR}
     )
     target_link_libraries(${TARGET_NAME} PUBLIC
-        SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf glm::glm
+        SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf
     )
 endif()
 
@@ -223,24 +185,48 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${glm_SOURCE_DIR}
 )
 
+    set(IMGUI_SRC
+        ${imgui_SOURCE_DIR}/imconfig.h
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_internal.h
+        ${imgui_SOURCE_DIR}/imstb_rectpack.h
+        ${imgui_SOURCE_DIR}/imstb_textedit.h
+        ${imgui_SOURCE_DIR}/imstb_truetype.h
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui.h
+
+        # Backends
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.h
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer2.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    )
+
+    add_library(ImGui STATIC ${IMGUI_SRC})
+    target_include_directories(ImGui PUBLIC ${imgui_SOURCE_DIR} ${SDL2_INCLUDE_DIR})
+    target_link_libraries(ImGui PRIVATE ${SDL2_LIBRARIES})
+
 # Compile at max warning level + treat warnings as errors
 target_compile_options(${TARGET_NAME} PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /EHsc>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
-# Link with OpenGL
-target_link_libraries(${TARGET_NAME} PUBLIC opengl32)
-
-# Add OpenGL
-find_package(OpenGL REQUIRED)
-target_link_libraries(${TARGET_NAME} PUBLIC OpenGL::GL)
-
-# Link with XInput
-target_link_libraries(${TARGET_NAME} PUBLIC XInput)
+## Link with OpenGL
+#target_link_libraries(${TARGET_NAME} PUBLIC opengl32)
+#
+## Add OpenGL
+#find_package(OpenGL REQUIRED)
+#target_link_libraries(${TARGET_NAME} PUBLIC OpenGL::GL)
+#
+## Link with XInput
+#target_link_libraries(${TARGET_NAME} PUBLIC XInput)
 
 if(EMSCRIPTEN)
-    set(EMSCRIPTEN_COMPILE_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -pthread -g")
+    set(EMSCRIPTEN_COMPILE_FLAGS "${EMSCRIPTEN_COMPILE_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -pthread -g")
     set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -pthread -sALLOW_MEMORY_GROWTH --preload-file \"${CMAKE_SOURCE_DIR}/Data@/\" -sSDL2_IMAGE_FORMATS=['tga','png'] -g")
 
     # Work around https://github.com/emscripten-core/emscripten/issues/11513
@@ -255,8 +241,7 @@ if(EMSCRIPTEN)
         LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS}"
     )
 
-    # Ensure SDL2 is properly linked for Emscripten builds
-    target_link_libraries(${TARGET_NAME} PUBLIC SDL2 SDL2_image SDL2_ttf SDL2_mixer glm)
+    # Have emscripten generate a html page too.
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 elseif(WIN32)
@@ -286,9 +271,10 @@ set_target_properties(${TARGET_NAME} PROPERTIES
     RUNTIME_DLLS "${DLL_DEPENDENCIES}"
 )
 
-# Define target architecture
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    target_compile_definitions(${TARGET_NAME} PRIVATE _AMD64_)
-else()
-    target_compile_definitions(${TARGET_NAME} PRIVATE _X86_)
-endif()
+## Define target architecture
+#if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#    # Ensure SDL2 include directory is properly set  
+#    target_compile_definitions(${TARGET_NAME} PRIVATE _AMD64_)
+#else()
+#    target_compile_definitions(${TARGET_NAME} PRIVATE _X86_)
+#endif()

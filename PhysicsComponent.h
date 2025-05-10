@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 namespace dae
 {

@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 #include <unordered_set>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 enum class CollisionType
 {
