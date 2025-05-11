@@ -43,6 +43,9 @@ void dae::InputManager::AddController(Controller* controller)
         m_ControllerVec.emplace_back(controller);
 }
 #endif // WIN32
+#ifndef WIN32
+void dae::InputManager::AddController(Controller*) {}
+#endif // !WIN32
 
 void dae::InputManager::AddKeyboardCommand(SDL_Keycode keyboardButton,
                                            Command* command)

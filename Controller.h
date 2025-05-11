@@ -1,5 +1,4 @@
 #pragma once
-#ifdef WIN32
 
 namespace dae
 {
@@ -12,6 +11,7 @@ namespace dae
     };
     class Command;
 
+#ifdef WIN32
     class Controller
     {
     public:
@@ -29,5 +29,16 @@ namespace dae
         class ControllerImpl;
         ControllerImpl* m_pImpl;
     };
-}
 #endif //WIN32
+#ifndef WIN32
+    class Controller
+    {
+    public:
+        Controller(unsigned long) {};
+        ~Controller() {};
+        void ProcessInput() {};
+        void AddCommand(Command&, unsigned int, ButtonState) {};
+        void RemoveCommand(Command&, unsigned int, ButtonState) {};
+    };
+#endif
+}

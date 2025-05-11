@@ -24,13 +24,13 @@ void dae::Texture2D::Scale(float scale)
     auto size = GetSize();
     size[0] = size[0] * static_cast<int>(scale);
     size[1] = size[1] * static_cast<int>(scale);
-
-    SDL_Texture* newTexture =
-        SDL_CreateTexture(Renderer::GetInstance().GetSDLRenderer(),
-                          SDL_PIXELFORMAT_RGBA8888,
-                          SDL_TEXTUREACCESS_TARGET,
-                          size[0],
-                          size[1]);
+    SDL_Texture* newTexture = SDL_CreateTexture(
+        Renderer::GetInstance().GetSDLRenderer(),
+        // Replace SDL_PIXELFORMAT_RGBA8888 with SDL_PIXELFORMAT_RGBA32 for endian independence
+        SDL_PIXELFORMAT_RGBA32,
+        SDL_TEXTUREACCESS_TARGET,
+        size[0],
+        size[1]);
 
     if (!newTexture)
         throw std::runtime_error("Failed to create scaled texture: " +

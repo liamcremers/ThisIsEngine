@@ -17,6 +17,7 @@ namespace dae
     {
     public:
         GameObjectCommand(GameObject* pGameObject);
+        virtual ~GameObjectCommand() = default;
         void Execute() override = 0;
         void Undo() override = 0;
 
@@ -34,6 +35,7 @@ namespace dae
         MoveCommand(GameObject& pGameObject,
                     glm::i8vec2 direction,
                     int speed = 100);
+        virtual ~MoveCommand() = default;
         void Execute() override;
         void Undo() override;
         void SetSpeed(int speed);
