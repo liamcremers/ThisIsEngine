@@ -10,7 +10,6 @@ dae::LivesUIComponent::LivesUIComponent(GameObject& parent,
                                         Font& font,
                                         LivesComponent* pLivesComponent) :
     BaseComponent{ parent },
-    //m_pFont{ font },
     m_pLivesComponent{ pLivesComponent },
     m_pTextComponent{ parent.AddComponent<TextComponent>(
         "Lives: " + std::to_string(m_pLivesComponent->GetLives()),
