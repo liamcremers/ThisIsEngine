@@ -8,6 +8,8 @@
 #include <set>
 #include <ranges>
 
+//test
+
 void dae::CollisionSystem::RegisterCollider(dae::ColliderComponent* collider)
 {
     if (collider->IsStatic())

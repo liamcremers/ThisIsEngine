@@ -1,4 +1,5 @@
 #include "BaseComponent.h"
+//test
 
 dae::BaseComponent::BaseComponent(GameObject& owner) :
     m_pOwner(owner)
