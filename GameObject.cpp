@@ -56,7 +56,7 @@ void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPosition)
         pParent->AddChild(this);
 }
 
-void dae::GameObject::DetechFromParent() { SetParent(nullptr); }
+void dae::GameObject::DetachFromParent() { SetParent(nullptr); }
 
 auto dae::GameObject::IsChild(const GameObject* pChild) const -> bool
 {

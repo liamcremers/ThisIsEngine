@@ -41,7 +41,7 @@ namespace dae
 
         // Parent & Children
         void SetParent(GameObject* pParent, bool keepWorldPosition = false);
-        void DetechFromParent();
+        void DetachFromParent();
         void UpdateWorldPosition();
         void SetLocalPosition(const glm::vec2& position);
         void SetPositionDirty();
