@@ -9,7 +9,7 @@ dae::SpriteComponent::SpriteComponent(GameObject& parent,
     BaseComponent(parent),
     m_Scale(scale)
 {
-    SetFrameSize(static_cast<int>(size.x), static_cast<int>(size.y));
+    SetFrameSize(static_cast<int>(size[0]), static_cast<int>(size[1]));
 }
 
 void dae::SpriteComponent::SetTexture(const std::string& filename)
@@ -26,8 +26,8 @@ void dae::SpriteComponent::SetTexture(const std::string& filename)
 
 void dae::SpriteComponent::SetFrameSize(int width, int height)
 {
-    m_FrameWidth = static_cast<int>(width * m_Scale);
-    m_FrameHeight = static_cast<int>(height * m_Scale);
+    m_FrameWidth = static_cast<int>(static_cast<float>(width) * m_Scale);
+    m_FrameHeight = static_cast<int>(static_cast<float>(height) * m_Scale);
     if (m_pTexture)
     {
         m_Columns = m_pTexture->GetSize()[0] / m_FrameWidth;
@@ -75,8 +75,8 @@ void dae::SpriteComponent::Render() const
     const SDL_Rect sourceRect{ x, y, m_FrameWidth, m_FrameHeight };
 
     const auto& pos = GetOwner().GetWorldPosition();
-    const SDL_Rect destRect{ static_cast<int>(pos.x),
-                             static_cast<int>(pos.y),
+    const SDL_Rect destRect{ static_cast<int>(pos[0]),
+                             static_cast<int>(pos[1]),
                              m_FrameWidth,
                              m_FrameHeight };
 

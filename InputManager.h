@@ -18,6 +18,7 @@ namespace dae
 
         void AddController(Controller* controller);
         void AddKeyboardCommand(SDL_Keycode keyboardButton, Command* command);
+
     private:
         friend class Singleton<InputManager>;
         InputManager() = default;
