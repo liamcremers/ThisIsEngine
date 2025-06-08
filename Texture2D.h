@@ -29,6 +29,6 @@ namespace dae
 
     private:
         SDL_Texture* m_texture;
-        bool m_isScaled{ false };
+        bool m_IsScaled{ false };
     };
 }

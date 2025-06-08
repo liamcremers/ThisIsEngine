@@ -24,6 +24,9 @@ namespace dae
                            const float y,
                            const float width,
                            const float height) const;
+        void RenderTexture(const Texture2D& texture,
+                           const SDL_Rect& srcRect,
+                           const SDL_Rect& dstRect) const;
 
         [[nodiscard]] auto GetSDLRenderer() const -> SDL_Renderer*;
         [[nodiscard]] auto GetBackgroundColor() const -> const SDL_Color&;

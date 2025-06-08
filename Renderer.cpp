@@ -112,6 +112,14 @@ auto dae::Renderer::RenderTexture(const Texture2D& texture,
     SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderTexture(const Texture2D& texture,
+                                  const SDL_Rect& srcRect,
+                                  const SDL_Rect& dstRect) const
+{
+    SDL_RenderCopy(
+        GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect);
+}
+
 auto dae::Renderer::GetSDLRenderer() const -> SDL_Renderer*
 {
     return m_renderer;
