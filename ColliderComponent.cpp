@@ -78,6 +78,11 @@ void dae::ColliderComponent::SubscribeToEndOverlap(const OverlapEvent& callback)
     m_EndOverlapCallbacks.emplace_back(callback);
 }
 
+void dae::ColliderComponent::SubscribeToOverlap(const OverlapEvent& callback)
+{
+    m_OverlapCallbacks.emplace_back(callback);
+}
+
 void dae::ColliderComponent::AddOverlap(ColliderComponent* other)
 {
     m_CurrentOverlaps.insert(other);

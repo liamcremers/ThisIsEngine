@@ -20,13 +20,16 @@ void dae::PhysicsComponent::FixedUpdate()
 
     if (m_UseGravity)
     {
-        m_Velocity[1] += m_Gravity * fixedDelta;
-        m_Velocity[1] = std::min(m_Velocity[1], m_MaxFallSpeed);
+        m_Velocity[1] = m_Gravity;
     }
     if (m_Velocity != glm::vec2{ 0, 0 })
     {
+        auto x = m_Velocity[0] * fixedDelta;
+        auto y = m_Velocity[1] * fixedDelta;
+        if (m_UseGravity)
+            y = std::max((m_Velocity[1] * fixedDelta), 1.f);
         GetOwner().SetLocalPosition(GetOwner().GetLocalPosition() +
-                                    m_Velocity * fixedDelta);
+                                    glm::vec2{ x, y });
 
         m_pCollider->SetHasMoved(true);
     }
@@ -38,11 +41,6 @@ void dae::PhysicsComponent::SetVelocity(const glm::vec2& velocity)
 }
 
 void dae::PhysicsComponent::SetGravity(float gravity) { m_Gravity = gravity; }
-
-void dae::PhysicsComponent::SetMaxFallSpeed(float speed)
-{
-    m_MaxFallSpeed = speed;
-}
 
 void dae::PhysicsComponent::SetUseGravity(bool useGravity)
 {
@@ -57,11 +55,6 @@ void dae::PhysicsComponent::SetUseGravity(bool useGravity)
 [[nodiscard]] auto dae::PhysicsComponent::GetGravity() const -> float
 {
     return m_Gravity;
-}
-
-[[nodiscard]] auto dae::PhysicsComponent::GetMaxFallSpeed() const -> float
-{
-    return m_MaxFallSpeed;
 }
 
 [[nodiscard]] auto dae::PhysicsComponent::IsUsingGravity() const -> bool

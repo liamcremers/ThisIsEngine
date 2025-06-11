@@ -26,6 +26,7 @@ namespace dae
 
         void SubscribeToBeginOverlap(const OverlapEvent& callback);
         void SubscribeToEndOverlap(const OverlapEvent& callback);
+        void SubscribeToOverlap(const OverlapEvent& callback);
         void AddOverlap(ColliderComponent* other);
         void RemoveOverlap(ColliderComponent* other);
 
@@ -53,6 +54,7 @@ namespace dae
         friend class CollisionSystem;
         std::vector<OverlapEvent> m_BeginOverlapCallbacks;
         std::vector<OverlapEvent> m_EndOverlapCallbacks;
+        std::vector<OverlapEvent> m_OverlapCallbacks;
 
         std::unordered_set<ColliderComponent*> m_CurrentOverlaps;
         glm::vec2 m_Size{};

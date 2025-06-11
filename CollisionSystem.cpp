@@ -35,7 +35,6 @@ void dae::CollisionSystem::ProcessCollisions() // FIXED UPDATE
                     HandleCollision(dynamicCollider, other);
                 }
             }
-
         dynamicCollider->SetHasMoved(false);
     }
 
@@ -98,9 +97,13 @@ void dae::CollisionSystem::HandleCollision(ColliderComponent* a,
                               [&](auto& beginOverlapEvent)
                               { beginOverlapEvent(*b); });
         std::ranges::for_each(b->m_BeginOverlapCallbacks,
-                              [&](auto& endOverlapEvent)
-                              { endOverlapEvent(*a); });
+                              [&](auto& beginOverlapEvent)
+                              { beginOverlapEvent(*a); });
     }
+    std::ranges::for_each(a->m_OverlapCallbacks,
+                          [&](auto& overlapEvent) { overlapEvent(*b); });
+    std::ranges::for_each(b->m_OverlapCallbacks,
+                          [&](auto& overlapEvent) { overlapEvent(*a); });
 
     ResolveCollision(a, b);
 }
