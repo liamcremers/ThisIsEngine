@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
+#include <any>
 
 namespace dae
 {
@@ -14,7 +15,8 @@ namespace dae
 
         void AddObserver(Observer* observer);
         void RemoveObserver(Observer* observer);
-        void Notify(const std::string& eventId);
+        void Notify(const std::string& eventId,
+                    const std::any& args = std::any{});
 
         Subject(const Subject& other) = delete;
         Subject(Subject&& other) = delete;
@@ -31,7 +33,9 @@ namespace dae
 
     protected:
         Observer() = default;
-        virtual void OnNotify(const std::string& eventId) = 0;
+        virtual void OnNotify(
+            const std::string& eventId,
+            [[maybe_unused]] const std::any& args = std::any{}) = 0;
         virtual void OnDestroy() = 0;
     };
 }

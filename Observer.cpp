@@ -20,10 +20,10 @@ void dae::Subject::RemoveObserver(Observer* observer)
     m_ObserverList.remove(observer);
 }
 
-void dae::Subject::Notify(const std::string& eventId)
+void dae::Subject::Notify(const std::string& eventId, const std::any& args)
 {
     for (const auto& observer : m_ObserverList)
     {
-        observer->OnNotify(eventId);
+        observer->OnNotify(eventId, args);
     }
 }
