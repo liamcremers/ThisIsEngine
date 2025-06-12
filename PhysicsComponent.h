@@ -10,7 +10,7 @@ namespace dae
     class PhysicsComponent : public BaseComponent
     {
     public:
-        PhysicsComponent(GameObject& parent, bool useGravity = true);
+        explicit PhysicsComponent(GameObject& parent, bool useGravity = true);
         void FixedUpdate() override;
 
         void SetVelocity(const glm::vec2& velocity);

@@ -2,8 +2,6 @@
 #include "BaseComponent.h"
 #include "RenderComponent.h"
 #include "TransformComponent.h"
-#include "FPSComponent.h"
 #include "TextComponent.h"
-#include "RotatorComponent.h"
 #include "PhysicsComponent.h"
 #include "ColliderComponent.h"

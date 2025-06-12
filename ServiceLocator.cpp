@@ -1,6 +1,4 @@
 #include "ServiceLocator.h"
-#include "SoundSystem.h"
-#include <cassert>
 
 std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::m_pSoundSystem =
     std::make_unique<NullSoundSystem>();

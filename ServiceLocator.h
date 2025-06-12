@@ -1,11 +1,13 @@
 #pragma once
 #include "Singleton.h"
 #include "SoundSystem.h"
-#include <memory>
 #include <filesystem>
+#include <memory>
 
 namespace dae
 {
+    class SoundSystem;
+
     class ServiceLocator final : public Singleton<ServiceLocator>
     {
     public:

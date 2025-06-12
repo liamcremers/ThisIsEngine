@@ -21,7 +21,8 @@ namespace dae
             std::function<void(const ColliderComponent& other)>;
 
     public:
-        ColliderComponent(GameObject& parent, const glm::vec2& size = {});
+        explicit ColliderComponent(GameObject& parent,
+                                   const glm::vec2& size = {});
         void OnCollision(const ColliderComponent& other) const;
 
         void SubscribeToBeginOverlap(const OverlapEvent& callback);

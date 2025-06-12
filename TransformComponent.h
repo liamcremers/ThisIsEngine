@@ -12,7 +12,7 @@ namespace dae
     class TransformComponent final : public BaseComponent
     {
     public:
-        TransformComponent(GameObject& owner) :
+        explicit TransformComponent(GameObject& owner) :
             BaseComponent(owner)
         {}
 

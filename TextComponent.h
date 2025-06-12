@@ -13,7 +13,9 @@ namespace dae
     class TextComponent final : public BaseComponent
     {
     public:
-        TextComponent(GameObject& parent, std::string text, Font& font);
+        explicit TextComponent(GameObject& parent,
+                               std::string text,
+                               Font& font);
 
         void Update() override;
         void Render() const override;
