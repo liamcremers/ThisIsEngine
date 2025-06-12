@@ -122,6 +122,12 @@ void dae::ColliderComponent::SetCollisionLayer(uint16_t layer)
     return GetOwner().GetWorldPosition();
 }
 
+[[nodiscard]] auto dae::ColliderComponent::GetColliderGameObject() const
+    -> dae::GameObject&
+{
+    return GetOwner();
+}
+
 [[nodiscard]] auto dae::ColliderComponent::GetSize() const -> glm::vec2
 {
     return m_Size;

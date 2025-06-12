@@ -38,6 +38,7 @@ namespace dae
         void SetCollisionLayer(uint16_t layer);
 
         [[nodiscard]] auto GetWorldPosition() const -> glm::vec2;
+        [[nodiscard]] auto GetColliderGameObject() const -> dae::GameObject&;
         [[nodiscard]] auto GetSize() const -> glm::vec2;
         [[nodiscard]] auto GetOffset() const -> glm::vec2;
         [[nodiscard]] auto GetMask() const -> uint16_t;

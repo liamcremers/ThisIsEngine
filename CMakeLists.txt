@@ -23,9 +23,6 @@ file(GLOB OTHER_SOURCES CONFIGURE_DEPENDS "*.cpp")
 list(REMOVE_ITEM OTHER_SOURCES ${COMPONENTS_SOURCES})
 source_group("Other" FILES ${OTHER_SOURCES})
 
-# Enable C++20 features
-target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
-
 include(FetchContent)
 # Add glm
 FetchContent_Declare(
