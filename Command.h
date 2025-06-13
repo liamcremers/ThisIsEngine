@@ -28,21 +28,4 @@ namespace dae
     private:
         GameObject* m_pGameObject{};
     };
-
-    class MoveCommand : public GameObjectCommand
-    {
-    public:
-        MoveCommand(GameObject& pGameObject,
-                    glm::i8vec2 direction,
-                    int speed = 100);
-        virtual ~MoveCommand() = default;
-        void Execute() override;
-        void Undo() override;
-        void SetSpeed(int speed);
-
-    private:
-        glm::i8vec2 m_Direction{};
-        int m_Speed{ 100 };
-    };
-
 }

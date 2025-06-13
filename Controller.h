@@ -15,7 +15,7 @@ namespace dae
     class Controller
     {
     public:
-        Controller(unsigned long idx);
+        explicit Controller(unsigned long idx);
         ~Controller();
         void ProcessInput();
         void AddCommand(Command& pCommand,
