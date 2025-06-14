@@ -18,6 +18,8 @@ namespace dae
         void Render() const;
         void LateUpdate();
 
+        void ActivateScene();
+        void DeactivateScene();
         [[nodiscard]] auto GetName() const -> const std::string&;
         [[nodiscard]] auto GetGameObjects() const -> std::vector<GameObject*>;
 
@@ -28,11 +30,15 @@ namespace dae
         Scene& operator=(Scene&& other) = delete;
 
     private:
+        void ProcessPendingComponentChanges();
         explicit Scene(std::string name);
 
-        std::string m_name;
+        std::string m_name{};
+        std::vector<GameObject*> m_pendingActivations{};
+        std::vector<GameObject*> m_pendingDeactivations{};
         std::vector<std::unique_ptr<GameObject>> m_objects{};
-
+        bool m_IsActive{};
+        bool m_hasPendingChanges{};
         static unsigned int m_idCounter;
     };
 }

@@ -100,6 +100,20 @@ namespace dae
                        nullptr;
         }
 
+template<Component BaseT>
+        [[nodiscard]] constexpr auto GetComponentOfType() const -> BaseT*
+        {
+            for (const auto& pComp : m_pComponents)
+            {
+                if (auto* derived = dynamic_cast<BaseT*>(pComp.get()))
+                {
+                    return derived;
+                }
+            }
+            return nullptr;
+        }
+
+
         template<Component CompT>
         [[nodiscard]] auto TryGetComponent() const -> std::optional<CompT*>
         {

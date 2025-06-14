@@ -14,6 +14,7 @@ namespace dae
     {
     public:
         void RegisterCollider(ColliderComponent* collider);
+        void UnRegisterCollider(ColliderComponent* collider);
 
         void ProcessCollisions();
 

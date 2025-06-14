@@ -1,5 +1,8 @@
 #include "Scene.h"
+#include "CollisionSystem.h"
+#include "EngineInputComponent.h"
 #include <algorithm>
+#include <ranges>
 
 using namespace dae;
 
@@ -27,6 +30,9 @@ void Scene::RemoveAll() { m_objects.clear(); }
 
 void Scene::Update()
 {
+    if (!m_IsActive)
+        return;
+
     for (auto& object : m_objects)
     {
         object->Update();
@@ -35,6 +41,9 @@ void Scene::Update()
 
 void dae::Scene::FixedUpdate()
 {
+    if (!m_IsActive)
+        return;
+
     for (auto& object : m_objects)
     {
         object->FixedUpdate();
@@ -43,6 +52,9 @@ void dae::Scene::FixedUpdate()
 
 void Scene::Render() const
 {
+    if (!m_IsActive)
+        return;
+
     for (const auto& object : m_objects)
     {
         object->Render();
@@ -51,8 +63,13 @@ void Scene::Render() const
 
 void dae::Scene::LateUpdate()
 {
+    if (!m_IsActive)
+        return;
+
     for (auto& object : m_objects)
         object->LateUpdate();
+
+    ProcessPendingComponentChanges();
 
     std::erase_if(m_objects,
                   [](const auto& object)
@@ -74,4 +91,56 @@ void dae::Scene::LateUpdate()
         gameObjects.push_back(obj.get());
     }
     return gameObjects;
+}
+
+void dae::Scene::ActivateScene()
+{
+    if (m_IsActive)
+        return;
+
+    for (auto& go : m_objects)
+        m_pendingActivations.push_back(go.get());
+
+    m_hasPendingChanges = true;
+    m_IsActive = true;
+}
+
+void dae::Scene::DeactivateScene()
+{
+    if (!m_IsActive)
+        return;
+
+    for (auto& go : m_objects)
+        m_pendingDeactivations.push_back(go.get());
+
+    m_hasPendingChanges = true;
+    m_IsActive = false;
+}
+
+void dae::Scene::ProcessPendingComponentChanges()
+{
+    if (!m_hasPendingChanges)
+        return;
+
+    for (auto* go : m_pendingDeactivations)
+    {
+        if (auto* collider = go->GetComponent<ColliderComponent>())
+            dae::CollisionSystem::GetInstance().UnRegisterCollider(collider);
+
+        if (auto* input = go->GetComponentOfType<EngineInputComponent>())
+            input->Deactivate();
+    }
+
+    for (auto* go : m_pendingActivations)
+    {
+        if (auto* collider = go->GetComponent<ColliderComponent>())
+            dae::CollisionSystem::GetInstance().RegisterCollider(collider);
+
+        if (auto* input = go->GetComponentOfType<EngineInputComponent>())
+            input->Activate();
+    }
+
+    m_pendingActivations.clear();
+    m_pendingDeactivations.clear();
+    m_hasPendingChanges = false;
 }

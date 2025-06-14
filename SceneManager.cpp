@@ -35,6 +35,30 @@ void dae::SceneManager::LateUpdate()
     }
 }
 
+void dae::SceneManager::ActivateScene(const std::string& name)
+{
+    auto it = std::find_if(m_Scenes.begin(),
+                           m_Scenes.end(),
+                           [&name](const std::shared_ptr<Scene>& scene)
+                           { return scene->GetName() == name; });
+    if (it != m_Scenes.end())
+    {
+        it->get()->ActivateScene();
+    }
+}
+
+void dae::SceneManager::DeactivateScene(const std::string& name)
+{
+    auto it = std::find_if(m_Scenes.begin(),
+                           m_Scenes.end(),
+                           [&name](const std::shared_ptr<Scene>& scene)
+                           { return scene->GetName() == name; });
+    if (it != m_Scenes.end())
+    {
+        it->get()->DeactivateScene();
+    }
+}
+
 auto dae::SceneManager::CreateScene(const std::string& name) -> dae::Scene&
 {
     assert(!name.empty() && "Scene name cannot be empty");

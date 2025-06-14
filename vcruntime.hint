@@ -1,2 +1,3 @@
 __EMSCRIPTEN__
 __has_include
+DEBUG_RENDER

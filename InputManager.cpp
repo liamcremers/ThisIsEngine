@@ -42,6 +42,18 @@ void dae::InputManager::AddController(Controller* controller)
     if (m_ControllerVec.size() < 2)
         m_ControllerVec.emplace_back(controller);
 }
+
+void dae::InputManager::RemoveController(Controller* controller)
+{
+    auto it =
+        std::remove_if(m_ControllerVec.begin(),
+                       m_ControllerVec.end(),
+                       [controller](Controller* c) { return c == controller; });
+    if (it != m_ControllerVec.end())
+    {
+        m_ControllerVec.erase(it, m_ControllerVec.end());
+    }
+}
 #endif // WIN32
 #ifndef WIN32
 void dae::InputManager::AddController(Controller*) {}

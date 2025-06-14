@@ -8,7 +8,23 @@
 #include <set>
 #include <ranges>
 
-//test
+void dae::CollisionSystem::UnRegisterCollider(dae::ColliderComponent* collider)
+{
+    auto staticIt =
+        std::remove_if(m_StaticColliders.begin(),
+                       m_StaticColliders.end(),
+                       [collider](auto* c) { return c == collider; });
+    if (staticIt != m_StaticColliders.end())
+        m_StaticColliders.erase(staticIt, m_StaticColliders.end());
+
+    auto dynamicIt =
+        std::remove_if(m_DynamicColliders.begin(),
+                       m_DynamicColliders.end(),
+                       [collider](auto* c) { return c == collider; });
+
+    if (dynamicIt != m_DynamicColliders.end())
+        m_DynamicColliders.erase(dynamicIt, m_DynamicColliders.end());
+}
 
 void dae::CollisionSystem::RegisterCollider(dae::ColliderComponent* collider)
 {

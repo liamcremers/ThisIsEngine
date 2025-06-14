@@ -19,6 +19,9 @@ namespace dae
         void Render();
         void LateUpdate();
 
+        void ActivateScene(const std::string& name);
+        void DeactivateScene(const std::string& name);
+
     private:
         friend class Singleton<SceneManager>;
         SceneManager() = default;

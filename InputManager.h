@@ -17,6 +17,7 @@ namespace dae
         [[nodiscard]] auto ProcessInput() -> bool;
 
         void AddController(Controller* controller);
+        void RemoveController(Controller* controller);
         void AddKeyboardCommand(SDL_Keycode keyboardButton, Command* command);
 
     private:

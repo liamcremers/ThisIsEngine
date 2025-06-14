@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Texture2D.h"
 
 #include <string>
 #include <memory>
@@ -7,7 +8,6 @@
 namespace dae
 {
     class Font;
-    class Texture2D;
     class TransformComponent;
 
     class TextComponent final : public BaseComponent
